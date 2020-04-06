@@ -1,0 +1,1 @@
+curl -XGET 'http://localhost:9200/movies-v1/_doc/1?pretty=true'

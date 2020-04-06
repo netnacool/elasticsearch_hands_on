@@ -1,0 +1,1 @@
+curl -XGET 'localhost:9200/movies/_search?size=10&pretty=true'

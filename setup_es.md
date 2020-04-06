@@ -14,11 +14,13 @@
 	```
 2. **Run elasticsearch**
 ```
-	cd <installation_path>
-	./bin/elasticsearch 
+cd <installation_path>
+./bin/elasticsearch
 ```
 3. **Verify if working**
-`curl GET "http://localhost:9200"`
+```
+curl "http://localhost:9200"
+```
 Check if *version.number* in response is *7.6.2*
 
 4. **Start one more data node**

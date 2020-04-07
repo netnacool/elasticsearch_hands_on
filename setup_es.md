@@ -36,9 +36,8 @@ curl "http://localhost:9200"
 Check if *version.number* in response is *7.6.2*
 
 4. **Start another data node**
-
-_By default, Elasticsearch is configured to prevent more than one node from sharing the same data path. Hence we have explicitely given a new path._
-**Please make sure you have exactly two instances running in the end, this is essential for some hands-on steps**
+	_By default, Elasticsearch is configured to prevent more than one node from sharing the same data path. Hence we have explicitely given a new path._
+	**Please make sure you have exactly two instances running in the end, this is essential for some hands-on steps**
 	1.	Linux/macOS
 	```
 	cd elasticsearch-7.6.2

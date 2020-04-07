@@ -15,9 +15,8 @@ _We provide the mappings and some settings for the index. The `mappings` define 
 [Built in analyzers](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html)
 [Analyzers Anatomy](https://www.elastic.co/guide/en/elasticsearch/reference/current/analyzer-anatomy.html)
 For `name` and `cast` properties we have defined two data types. One is a `text` field for in-exact matches. The second one is `keyword` field for exact matches. But we have also added a custom lowercase analyzer to the `keyword` fields so that our queries are case insensitive. The normalizer is applied prior to indexing the keyword, as well as at search-time when the keyword field is searched. See
-[Normalizers](https://www.elastic.co/guide/en/elasticsearch/reference/current/normalizer.html)
-[Multi fields](https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html)
-Also See 
+[Normalizers](https://www.elastic.co/guide/en/elasticsearch/reference/current/normalizer.html), 
+[Multi fields](https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html), 
 [Create index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html)_
 ```
 curl -XPUT 'http://localhost:9200/movies-v1' \
@@ -249,9 +248,9 @@ _This type of query is used for full text searches and fuzzy matching. This one 
 The `description` field is `text` , so it is processed by the [standard analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-analyzer.html) by default if not overriden. In this case the standard anaylzer treats all words as seperate tokens and then converts them to lowercase.
 The standard analyzer is also applied on the input text when doing a match query. The doc is a match if any of the query tokens match the indexed tokens. The higher the number of matching tokens, the better the score. Also note that we are using the `movies` alias to search on all three indices.
 See -
-[Match query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html)
-[Text datatype](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html)
-[Built in analyzers](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html)
+[Match query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html), 
+[Text datatype](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html), 
+[Built in analyzers](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html), 
 [How scoring works](https://www.compose.com/articles/how-scoring-works-in-elasticsearch/)_
 ```
 curl -XPOST 'localhost:9200/movies/_search' \
@@ -349,8 +348,8 @@ curl -XPOST 'localhost:9200/movies/_search' \
 ```
 15.	**Simple nested aggregatinon query**
 _This query first buckets the docs on the basis of `genre` using a `term` aggregation and then calculates the average `rating` of each bucket. See -
-[Nested aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-nested-aggregation.html)
-[Terms aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html)
+[Nested aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-nested-aggregation.html), 
+[Terms aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html), 
 [Avg aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-avg-aggregation.html)_
 ```
 curl -XPOST 'http://localhost:9200/movies/_search' \

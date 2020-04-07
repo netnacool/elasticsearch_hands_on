@@ -30,10 +30,10 @@
 	.\elasticsearch.bat
 	```
 3.	**Verify if working**
-```
-curl "http://localhost:9200"
-```
-Check if *version.number* in response is *7.6.2*
+	```
+	curl "http://localhost:9200"
+	```
+	Check if *version.number* in response is *7.6.2*
 
 4. **Start another data node**
 	_By default, Elasticsearch is configured to prevent more than one node from sharing the same data path. Hence we have explicitely given a new path._

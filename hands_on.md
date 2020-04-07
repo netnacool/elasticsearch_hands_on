@@ -2,14 +2,14 @@
 
 **Pre-requesite : Complete setup.md**
 
-1. **Check health of cluster.**
+1.	**Check health of cluster.**
 _`number_of_nodes` should be 2 and `status` green
 See [Cluster health](https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-health.html)_
 ```
 curl -XGET 'http://localhost:9200/_cluster/health'
 ```
 
-2. **Create a new index.**
+2.	**Create a new index.**
 _We provide the mappings and some settings for the index. The `mappings` define the schema of the index. See [Mapping Types](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html). In `settings`, the shard and replica count has been overriden (Default value is 1 for both in v7.6.2 - See [Index Settings](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings)). 
 `keyword` fields are not analyzed by default and have to match exactly, whereas `text` fields are analyzed by the standard analyzer. See 
 [Built in analyzers](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html)
@@ -88,14 +88,14 @@ curl -XPUT 'http://localhost:9200/movies-v1' \
 }'
 ```
 
-3. <a name="get_index"></a>**Get the information about the index you just created**
+3.	<a name="get_index"></a>**Get the information about the index you just created**
 _This basically returns the information about the index
 See [Get index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-index.html)_
 ```
 curl -XGET 'http://localhost:9200/movies-v1'
 ```
 
-4. **Index a document**
+4.	**Index a document**
 _Note that a field can also store an array of the data type. So `cast` field can have a single string or an array of strings. Also we are passing the id for the doc. If id is not passed, an id is auto generated.
 See [Index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html)_
 ```
@@ -115,20 +115,20 @@ curl -XPUT 'http://localhost:9200/movies-v1/_doc/1?pretty=true' \
 }'
 ```
 
-5. **Fetch the document we just created**
+5.	**Fetch the document we just created**
 _We pass the id of the document to fetch it. See [Get API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html)_
 ```
 curl -XGET 'http://localhost:9200/movies-v1/_doc/1'
 ```
 
-6. **Add alias to an index**
+6.	**Add alias to an index**
 _An alias can be mapped to multiple indices. We can query multiple indices by using a single alias. This can also help in migrating an old index to a new one, as we can just map the alias to a new index instead of changing references in our application code. Here we are mapping the `movies` alias to `movies-v1` index
 See [Add alias](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-add-alias.html)_
 ```
 curl -XPUT 'http://localhost:9200/movies-v1/_alias/movies'
 ```
 
-7. <a name="create_template"></a>**Create an index template**
+7.	<a name="create_template"></a>**Create an index template**
 _Indices can be auto configured on creation using templates. 
 If the index name matches the patterns defined in `index_patterns` , it will follow the defined template.
 We just copied the configuration of the index we created previously and used it to create a template. The only difference is that we have also configured the `movies` alias to be mapped by default in the`aliases`field
@@ -206,14 +206,14 @@ curl -XPUT 'http://localhost:9200/_template/movies_template_v1' \
 }'
 ```
 
-8. **Create new indices that follow the template**
+8.	**Create new indices that follow the template**
 _Now if we create new indices that follow the movies-* pattern, we do not need to pass any configurations. They are created automatically. Once created, you can check the index details using [step 3](#get_index)_
 ```
 curl -XPUT 'http://localhost:9200/movies-v2'
 curl -XPUT 'http://localhost:9200/movies-v3'
 ```
 
-9. **Bulk index documents**
+9.	**Bulk index documents**
 _The actions are specified in the request body using a newline delimited JSON `application/x-ndjson`. The operations which have data associated with them like index, create, update would expect data in the next line. Operations like delete only need a single line.
 See [Bulk Index](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html)_
 ```
@@ -236,7 +236,7 @@ curl -XPOST 'http://localhost:9200/_bulk' \
 {"name": "Batman v Superman: Dawn of Justice", "description": "Fearing that the actions of Superman are left unchecked, Batman takes on the Man of Steel, while the world wrestles with what kind of a hero it really needs.", "cast": [ "Ben Affleck", "Henry Cavill", "Amy Adams"], "duration_minutes": 151, "genre": ["Action", "Adventure", "Sci-Fi"], "language": ["English"], "rating": 6.5, "release_data": "25-03-2006", "created_at": "05-04-2020 17:42:03", "updated_at": "05-04-2020 17:42:03"}'
 ```
 
-10. **Get all docs from an index**
+10.	**Get all docs from an index**
 _This is just a normal search request with no query defined, which means all documents are fetched. The size parameter defines the maximum number of documents that should be fetched. When the document count is large, [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/search-request-body.html#request-body-search-scroll) is prefered instead of fetching everything in one request.
 See -
 [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html)
@@ -245,7 +245,7 @@ _
 curl -XGET 'localhost:9200/movies/_search?size=10'
 ```
 
-11. **A simple match query**
+11.	**A simple match query**
 _This type of query is used for full text searches and fuzzy matching. This one would fetch all documents which have the word batman in description. 
 The `description` field is `text` , so it is processed by the [standard analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-analyzer.html) by default if not overriden. In this case the standard anaylzer treats all words as seperate tokens and then converts them to lowercase.
 The standard analyzer is also applied on the input text when doing a match query. The doc is a match if any of the query tokens match the indexed tokens. The higher the number of matching tokens, the better the score. Also note that we are using the `movies` alias to search on all three indices.
@@ -268,7 +268,7 @@ curl -XPOST 'localhost:9200/movies/_search' \
 }'
 ```
 
-12. **A filter term query**
+12.	**A filter term query**
 _Filter queries do not contribute to the score of a document. We use this when scoring does not matter to us. This saves unnecessary processing. 
 See [Query and filter context](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html). 
 A term query is kind of the opposite of a match query. The provided text should match the source exactly for there to be a match. And the query text is not analyzed like in match query. Recall that we had configured a custom lowercase `analyzer` for `cast` field, so this search is case insensitive. Without it we would had to pass the exact text (i.e Tom Hanks) to get a match.
@@ -293,7 +293,7 @@ curl -XPOST 'localhost:9200/movies/_search' \
 }'
 ```
 
-13. **A filter match query**
+13.	**A filter match query**
 _Here we are using a match query but the score returned would be zero, as it is inside a filter context. This is useful if the score does not matter to us but we do not want to do an exact match._
 ```
 curl -XPOST 'localhost:9200/movies/_search' \
@@ -314,7 +314,7 @@ curl -XPOST 'localhost:9200/movies/_search' \
 }'
 ```
 
-14. **Boolean query**
+14.	**Boolean query**
 _This query is made up of multiple parts. 
 Everything inside the `must` clause contributes to the score. It has a `term` query, so there should be an exact match of `language=English` for the doc to be returned.
 Everything inside the `filter` clause will not contribute to the score but other than that, it is same as a `must` clause. We are doing a search for the word `batman` inside the `description` field, and an exact match for `genre=Action`. 
@@ -347,7 +347,7 @@ curl -XPOST 'localhost:9200/movies/_search' \
   }
 }'
 ```
-15. **Simple nested aggregatinon query**
+15.	**Simple nested aggregatinon query**
 _This query first buckets the docs on the basis of `genre` using a `term` aggregation and then calculates the average `rating` of each bucket. See -
 [Nested aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-nested-aggregation.html)
 [Terms aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html)
@@ -368,14 +368,14 @@ curl -XPOST 'http://localhost:9200/movies/_search' \
 }'
 ```
 
-16. **See a list of all indices**
+16.	**See a list of all indices**
 _You would notice that the indices are yellow. An index is yellow if some of it's replica shards are not allocated. Check next step for more details.
 See [Get indices](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-indices.html)_
 ```
 curl -XGET 'http://localhost:9200/_cat/indices?v'
 ```
 
-17. **Fetch shard allocation**
+17.	**Fetch shard allocation**
 _Here we fetch the shard allocation details to see why the node is yellow. You can see that the shards are distributed equally across the two nodes, and 3 of the replicas are unassigned.
 This is because we defined 2 replicas per shard in our index settings, which will require 3 nodes minimum. This is because
  a) A replica shard cannot exist in the same node which has the primary shard.
@@ -386,7 +386,7 @@ See [Shard info](https://www.elastic.co/guide/en/elasticsearch/reference/current
 curl -XGET 'http://localhost:9200/_cat/shards?v&h=index,shard,prirep,id'
 ```
 
-18. **Update index settings**
+18.	**Update index settings**
 _If we reduce the number of replicas to 1, the status of indices would become green. We use the pattern movies-v* to update all indices at once Note that we have not updated the index template, so any new index will still have the old setting. Templates cannot be partially updated, we use the same API we used for creation i.e [step 7](#create_template)
 See [Update index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html)_
 ```

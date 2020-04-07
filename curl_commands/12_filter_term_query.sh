@@ -6,7 +6,7 @@ curl -XPOST 'localhost:9200/movies/_search?pretty=true' \
 			"filter": {
 				"term": {
 					"cast.raw": {
-						"value": "tom hanks"
+						"value": "TOM hanks"
 					}
 				}
 			}

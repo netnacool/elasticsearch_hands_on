@@ -239,8 +239,7 @@ curl -XPOST 'http://localhost:9200/_bulk' \
 10.	**Get all docs from an index**
 _This is just a normal search request with no query defined, which means all documents are fetched. The size parameter defines the maximum number of documents that should be fetched. When the document count is large, [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/search-request-body.html#request-body-search-scroll) is prefered instead of fetching everything in one request.
 See -
-[Search API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html)
-_
+[Search API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html)_
 ```
 curl -XGET 'localhost:9200/movies/_search?size=10'
 ```
@@ -320,6 +319,7 @@ Everything inside the `must` clause contributes to the score. It has a `term` qu
 Everything inside the `filter` clause will not contribute to the score but other than that, it is same as a `must` clause. We are doing a search for the word `batman` inside the `description` field, and an exact match for `genre=Action`. 
 The `must_not` clause is just the opposite of `must` clause. We are using a range query inside it. See [Range Query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html)
 The `should` clause only affects the score but does not decide whether a doc is returned or not.
+Notice that the movie with batman in it's name gets a better score and the second batman movie get's filtered out because of release date.
 See 
 [Bool query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)_
 ```
@@ -368,14 +368,14 @@ curl -XPOST 'http://localhost:9200/movies/_search' \
 }'
 ```
 
-16.	**See a list of all indices**
+16.	<a name="get_all_indices"></a>**See a list of all indices**
 _You would notice that the indices are yellow. An index is yellow if some of it's replica shards are not allocated. Check next step for more details.
 See [Get indices](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-indices.html)_
 ```
 curl -XGET 'http://localhost:9200/_cat/indices?v'
 ```
 
-17.	**Fetch shard allocation**
+17.	<a name="shard_allocation"></a>**Fetch shard allocation**
 _Here we fetch the shard allocation details to see why the node is yellow. You can see that the shards are distributed equally across the two nodes, and 3 of the replicas are unassigned.
 This is because we defined 2 replicas per shard in our index settings, which will require 3 nodes minimum. This is because
  a) A replica shard cannot exist in the same node which has the primary shard.
@@ -388,6 +388,7 @@ curl -XGET 'http://localhost:9200/_cat/shards?v&h=index,shard,prirep,id'
 
 18.	**Update index settings**
 _If we reduce the number of replicas to 1, the status of indices would become green. We use the pattern movies-v* to update all indices at once Note that we have not updated the index template, so any new index will still have the old setting. Templates cannot be partially updated, we use the same API we used for creation i.e [step 7](#create_template)
+Once executed check the shard allocation using [step 17](#shard_allocation) and indices status using [step 16](#get_all_indices)
 See [Update index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html)_
 ```
 curl -XPUT 'localhost:9200/movies-v*/_settings' \

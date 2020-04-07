@@ -1,1 +1,1 @@
-curl -XGET 'http://localhost:9200/_cat/allocation?v'
+curl -XGET 'http://localhost:9200/_cat/shards?v&h=index,shard,prirep,id'

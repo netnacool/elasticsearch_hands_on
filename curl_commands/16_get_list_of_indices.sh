@@ -1,1 +1,1 @@
-curl -XGET 'http://localhost:9200/_cat/indices?pretty=true'
+curl -XGET 'http://localhost:9200/_cat/indices?v'

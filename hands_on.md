@@ -10,14 +10,13 @@ curl -XGET 'http://localhost:9200/_cluster/health'
 ```
 
 2.	**Create a new index.**
-_We provide the mappings and some settings for the index. The `mappings` define the schema of the index. See [Mapping Types](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html). In `settings`, the shard and replica count has been overriden (Default value is 1 for both in v7.6.2 - See [Index Settings](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings)). 
+_We provide the mappings and some settings for the index. The `mappings` define the schema of the index. See [Create index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html), [Mapping Types](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html). In `settings`, the shard and replica count has been overriden (Default value is 1 for both in v7.6.2 - See [Index Settings](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings)). 
 `keyword` fields are not analyzed by default and have to match exactly, whereas `text` fields are analyzed by the standard analyzer. See 
-[Built in analyzers](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html)
+[Built in analyzers](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html),
 [Analyzers Anatomy](https://www.elastic.co/guide/en/elasticsearch/reference/current/analyzer-anatomy.html)
 For `name` and `cast` properties we have defined two data types. One is a `text` field for in-exact matches. The second one is `keyword` field for exact matches. But we have also added a custom lowercase analyzer to the `keyword` fields so that our queries are case insensitive. The normalizer is applied prior to indexing the keyword, as well as at search-time when the keyword field is searched. See
 [Normalizers](https://www.elastic.co/guide/en/elasticsearch/reference/current/normalizer.html), 
-[Multi fields](https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html), 
-[Create index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html)_
+[Multi fields](https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html)_
 ```
 curl -XPUT 'http://localhost:9200/movies-v1' \
 -H 'Content-Type: application/json' \
@@ -387,8 +386,8 @@ curl -XGET 'http://localhost:9200/_cat/shards?v&h=index,shard,prirep,id'
 
 18.	**Update index settings**
 _If we reduce the number of replicas to 1, the status of indices would become green. We use the pattern movies-v* to update all indices at once Note that we have not updated the index template, so any new index will still have the old setting. Templates cannot be partially updated, we use the same API we used for creation i.e [step 7](#create_template)
-Once executed check the shard allocation using [step 17](#shard_allocation) and indices status using [step 16](#get_all_indices)
-See [Update index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html)_
+Once executed check the shard allocation using [step 17](#shard_allocation) and indices status using [step 16](#get_all_indices).
+Also See [Update index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html)_
 ```
 curl -XPUT 'localhost:9200/movies-v*/_settings' \
 -H 'Content-Type: application/json' \
